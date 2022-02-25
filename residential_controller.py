@@ -4,7 +4,7 @@ floorRequestButtonID = 1
 callButtonID = 1
 doorID = 1
 
-
+#************************************************here we create the Column*************************************************
 class Column:
     def __init__(self, _id, _amountOfFloors, _amountOfElevators):
         self.ID = _id
@@ -16,6 +16,7 @@ class Column:
         self.createElevators()
         self.createCallButtons()
 
+#*********************************this method creates the elevators in a list************************************
     def createElevators(self):
         global elevatorID
         for elevator in range(0, self.amountOfElevators)  :
@@ -23,7 +24,7 @@ class Column:
             self.elevatorList.append(elevator)
             elevatorID += 1
             
-
+#****************************** this method is used to create the buttons outside the elevator********************
     def createCallButtons(self):
         buttonFloor = 0
         global callButtonID
@@ -39,6 +40,7 @@ class Column:
 
             buttonFloor += 1
 
+#*********************************this method request the elevator by first using the mthod findBestElevator***************************************** 
     def requestElevator(self, floor, direction):
         elevator = self.findElevator(floor, direction)
         elevator.floorRequestList.append(floor)
@@ -46,9 +48,10 @@ class Column:
         elevator.move()
         elevator.door.status = "open"
         return elevator
-
+    
+#*********************************this method find the best elevator by checking wich one is the best for the situation******************************
     def findElevator(self, requestedFloor, requestedDirection):
-        bestElevatorInformations = {
+        bestElevatorInformations = { # directory
         'bestElevator': None,
         'bestScore': 5,
         'referenceGap': 10000000
@@ -70,7 +73,8 @@ class Column:
 
             
         return bestElevatorInformations['bestElevator']
-
+    
+#****************************this method creates a score system to always return the best elevator**************************
     def checkIfElevatorIsBetter(self, scoreToCheck, newElevator, bestElevatorInformations, floor):
         if (scoreToCheck < bestElevatorInformations['bestScore']):
             bestElevatorInformations['bestScore'] = scoreToCheck
@@ -87,6 +91,7 @@ class Column:
         return bestElevatorInformations
 
 
+#***********************the elevator class creates elevator objects********************************************************
 class Elevator:
     def __init__(self, _id, _amountOfFloors):
         global doorID
@@ -101,6 +106,7 @@ class Elevator:
         self.floorRequestList = []
         self.createFloorRequestButtons(self.amountOfFloors)
 
+#************************************this method create the buttons inside the elevator**************************************
     def createFloorRequestButtons(self, _amountOfFloors):
         global floorRequestButtonID
         buttonFloor = 1
@@ -110,13 +116,14 @@ class Elevator:
             buttonFloor += 1
             self.floorRequestButtonList.append(floorRequestButton)
         
-
+#********************************this method request the desired floor from the user*****************************************
     def requestFloor(self,  floor):
         self.floorRequestList.append(floor)
         self.door.status = "closed"
         self.move()
         self.door.status = "open"
 
+#***************************************the move method basically move the elevator to the desired floor**********************
     def move(self):
         while  self.floorRequestList != [] :
             destination = self.floorRequestList.pop()
@@ -141,14 +148,14 @@ class Elevator:
         self.status = "idle"
 
 
-
+#**************************************this method sorts the list of request made by the user*********************************
     def sortFloorList(self):
         if self.direction == "up":
             self.floorRequestList.sort()
         else:
             self.floorRequestList.reverse()
 
-
+#***************************************this class creates the callButton objects*********************************************
 class CallButton:
     def __init__(self, _id, _floor, _direction):
         self.ID = _id
@@ -156,14 +163,14 @@ class CallButton:
         self.floor = _floor
         self.direction = _direction
 
-
+#*************************************** this class here creates objects for the buttons inside the elevator****************** 
 class FloorRequestButton:
     def __init__(self, _id, _floor):
         self.ID = _id
         self.status = "off"
         self.floor = _floor
 
-
+#*****************************************finally this class creates door objects*********************************************
 class Door:
     def __init__(self, _id):
         self.ID = _id

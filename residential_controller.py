@@ -40,7 +40,7 @@ class Column:
 
             buttonFloor += 1
 
-#*********************************this method request the elevator by first using the mthod findBestElevator***************************************** 
+#*********************************this method request the elevator by first using the method findBestElevator***************************************** 
     def requestElevator(self, floor, direction):
         elevator = self.findElevator(floor, direction)
         elevator.floorRequestList.append(floor)
